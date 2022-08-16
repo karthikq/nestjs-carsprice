@@ -12,8 +12,8 @@ import { User } from './user.entity';
 export class UserService {
   constructor(@InjectRepository(User) private repo: Repository<User>) {}
 
-  createUser(email: string, password: string) {
-    const user = this.repo.create({ email, password });
+  async createUser(email: string, password: string) {
+    const user = await this.repo.create({ email, password });
     return this.repo.save(user);
   }
   async findOne(id: number) {

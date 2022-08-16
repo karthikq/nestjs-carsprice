@@ -1,3 +1,5 @@
+/** @format */
+
 import {
   Body,
   Controller,
@@ -7,21 +9,23 @@ import {
   Patch,
   Post,
   Query,
-  UseInterceptors,
   Session,
+  UseGuards,
 } from '@nestjs/common';
+
 import { Serialize } from 'src/interceptors/serialize.interceptor';
+import { AuthGuard } from 'src/guards/auth.guard';
 import { AuthService } from './auth.service';
 import { CreateUser } from './decorators/current-user.decorator';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { userDto } from './dto/User.dto';
-import { CurrentUserInterceptor } from './interceptors/current-user.interceptor';
+
+import { User } from './user.entity';
 import { UserService } from './user.service';
 
 @Controller('auth')
 @Serialize(userDto)
-@UseInterceptors(CurrentUserInterceptor)
 export class UserController {
   constructor(
     private userService: UserService,
@@ -46,7 +50,8 @@ export class UserController {
     return user;
   }
   @Get('/user')
-  getUser(@CreateUser() user: any) {
+  @UseGuards(AuthGuard)
+  getUser(@CreateUser() user: User) {
     console.log(user);
   }
 
