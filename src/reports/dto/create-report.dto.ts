@@ -7,16 +7,17 @@ import {
   Min,
 } from 'class-validator';
 
-export class createReportDto {
+export class CreateReportDto {
   @IsString()
   make: string;
+
   @IsString()
   model: string;
 
   @IsNumber()
   @Min(1930)
   @Max(2050)
-  year: number;
+  year: string;
 
   @IsNumber()
   @Min(0)
