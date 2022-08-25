@@ -7,6 +7,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { User } from 'src/user/user.entity';
 import { Repository } from 'typeorm';
 import { CreateReportDto } from './dto/create-report.dto';
+import { GetEstimateDto } from './dto/get-estimate.dto';
 
 import { Report } from './reports.entity';
 
@@ -23,7 +24,6 @@ export class ReportService {
   async changeApprovel(id: number, approved: boolean) {
     try {
       const report = await this.repo.findOne({ where: { id } });
-      console.log(report);
       if (!report) {
         throw new NotFoundException('Report not found');
       }
@@ -34,4 +34,6 @@ export class ReportService {
       throw new BadRequestException('request error please try again');
     }
   }
+
+  generateEstimate(data: GetEstimateDto) {}
 }
