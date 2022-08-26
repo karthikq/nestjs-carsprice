@@ -9,6 +9,9 @@ export class Report {
   @Column()
   price: number;
 
+  @Column({ default: false })
+  approve: boolean;
+
   @Column()
   make: string;
 
