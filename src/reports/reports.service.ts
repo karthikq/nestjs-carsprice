@@ -35,5 +35,19 @@ export class ReportService {
     }
   }
 
-  generateEstimate(data: GetEstimateDto) {}
+  generateEstimate({ make, model, lat, lng, millage, year }: GetEstimateDto) {
+    return this.repo
+      .createQueryBuilder()
+      .select('AVG(price)', 'price')
+      .where('make = :make', { make })
+      .andWhere('model = :model', { model })
+      .andWhere('lat - :lat BETWEEN -5 and 5', { lat })
+      .andWhere('lng - :lng BETWEEN -5 and 5', { lng })
+      .andWhere('year = :year BETWEEN -3 and 3', { year })
+      .andWhere('approved IS TRUE')
+      .orderBy('ABS(millage - :millage)', 'DESC')
+      .setParameters({ millage })
+      .limit(3)
+      .getRawMany();
+  }
 }
